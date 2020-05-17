@@ -5,9 +5,9 @@
 *.pot
 *.pyc
 __pycache__/
-gmap/__pycache__
-gmap/migration/__pycache__
-makeyourway_django/__pycache__
+gmap/__pycache__/
+gmap/migration/__pycache__/
+makeyourway_django/__pycache__/
 local_settings.py
 db.sqlite3
 media
