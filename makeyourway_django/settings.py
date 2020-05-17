@@ -11,10 +11,19 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import environ
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# settings.pyの位置を起点として３つ上の親ディレクトリを参照。
+BASE_DIR = environ.Path(__file__) - 3
+
+env = environ.Env()
+
+# 環境変数でDJANGO_READ_ENV_FILEをTrueにしておくと.envを読んでくれる。
+READ_ENV_FILE = env.bool('DJANGO_READ_ENV_FILE', default=False)
+if READ_ENV_FILE:
+    env_file = str(BASE_DIR.path('.env'))
+    env.read_env(env_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -131,3 +140,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MAP_API_KEY=env('MAP_API_KEY')
+DATABASES = {
+    'default': env.db() # デフォルトでDATABASE_URLの環境変数を分解してくれる
+}
