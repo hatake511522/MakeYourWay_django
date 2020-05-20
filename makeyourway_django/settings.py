@@ -15,15 +15,17 @@ import environ
 
 
 # settings.pyの位置を起点として３つ上の親ディレクトリを参照。
-BASE_DIR = environ.Path(__file__) - 3
+BASE_DIR = environ.Path(__file__) - 1
 
-env = environ.Env()
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+# reading .env file
+environ.Env.read_env('.env')
 
-# 環境変数でDJANGO_READ_ENV_FILEをTrueにしておくと.envを読んでくれる。
-READ_ENV_FILE = env.bool('DJANGO_READ_ENV_FILE', default=False)
-if READ_ENV_FILE:
-    env_file = str(BASE_DIR.path('.env'))
-    env.read_env(env_file)
+# False if not in os.environ
+DEBUG = env('DEBUG')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -141,7 +143,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# for google map api
 MAP_API_KEY=env('MAP_API_KEY')
-DATABASES = {
-    'default': env.db() # デフォルトでDATABASE_URLの環境変数を分解してくれる
-}
+
